@@ -14,7 +14,7 @@ object CassandraExample extends App {
     .set("spark.cassandra.connection.host", "127.0.0.1")
   val sc = new SparkContext(conf)
 
-  val rdd: RDD[(JournalKey, Any)] = sc.eventTable().cache()
+  val rdd: RDD[(JournalKey, Any)] = sc.events().cache()
 
   println("Unsorted:")
   rdd.collect().foreach(println)
