@@ -11,10 +11,9 @@ crossScalaVersions in ThisBuild := Seq("2.10.4", "2.11.6")
 resolvers in ThisBuild += "krasserm at bintray" at "http://dl.bintray.com/krasserm/maven"
 
 libraryDependencies in ThisBuild ++= Seq(
-  "com.typesafe.akka" %% "akka-persistence"              % "2.4.6",
-  "com.typesafe.akka" %% "akka-testkit"                  % "2.4.6" % "test",
-  "org.apache.spark"  %% "spark-core"                    % "1.6.1",
-  "org.scalatest"     %% "scalatest"                     % "2.2.6" % "test"
+  "org.apache.spark"  %% "spark-core"   % "1.6.1",
+  "com.typesafe.akka" %% "akka-testkit" % "2.4.6" % "test",
+  "org.scalatest"     %% "scalatest"    % "2.2.6" % "test"
 )
 
 lazy val root = (project.in(file("."))).aggregate(cassandra, kafka, examples)

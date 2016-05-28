@@ -5,6 +5,7 @@ fork in Test := true
 parallelExecution in Test := false
 
 libraryDependencies ++= Seq(
+  "com.typesafe.akka"    %% "akka-persistence"           % "2.4.6",
   "org.apache.spark"     %% "spark-sql"                  % "1.6.1",
   "com.datastax.spark"   %% "spark-cassandra-connector"  % "1.5.0",
   "org.apache.cassandra" %  "cassandra-clientutil"       % "3.5",
