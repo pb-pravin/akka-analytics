@@ -10,7 +10,7 @@ import org.apache.spark.streaming.StreamingContext
 class JournalStreamingContext(
     sc: StreamingContext,
     serializerConfig: Config = ConfigFactory.empty())
-  extends IsJournalContext[StreamingContext, RDD] {
+  extends IsJournalContext[RDD] {
 
   override def events(
       keyspace: String = "akka",

@@ -7,11 +7,11 @@ import org.apache.spark.streaming.StreamingContext
 package object cassandra {
   implicit def journalContext(
       context: SparkContext
-    ): JournalContext[SparkContext, RDD, JournalSparkContext] =
+    ): JournalContext[SparkContext, RDD] =
     new JournalContext(context)(new JournalSparkContext(context))
 
   implicit def journalContext(
       context: StreamingContext
-    ): JournalContext[StreamingContext, RDD, JournalStreamingContext] =
+    ): JournalContext[StreamingContext, RDD] =
     new JournalContext(context)(new JournalStreamingContext(context))
 }

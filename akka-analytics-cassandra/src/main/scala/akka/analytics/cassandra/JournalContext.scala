@@ -5,7 +5,7 @@ import com.datastax.spark.connector.ColumnRef
 import com.typesafe.config.{Config, ConfigFactory}
 
 object JournalContext {
-  trait IsJournalContext[SC, R[_]] {
+  trait IsJournalContext[R[_]] {
     def events(
         keyspace: String = "akka",
         table: String = "messages",
@@ -17,15 +17,14 @@ object JournalContext {
   private[cassandra] case object Ignore
 }
 
-private[cassandra] class JournalContext[SC, R[_], CTX <: IsJournalContext[SC, R]] (
+private[cassandra] class JournalContext[SC, R[_]: IsJournalContext] (
     val sc: SC,
-    serializerConfig: Config = ConfigFactory.empty()
-  )(implicit ctx: CTX) {
+    serializerConfig: Config = ConfigFactory.empty()) {
 
   private var serializerOption: Option[EventSerializer] = None
 
-  def withSerializerConfig(config: Config): JournalContext[SC, R, CTX] = {
-    val journalContext = new JournalContext[SC, R, CTX](sc, config)(ctx)
+  def withSerializerConfig(config: Config): JournalContext[SC, R] = {
+    val journalContext = new JournalContext[SC, R](sc, config)
     journalContext.serializerOption = serializerOption
     journalContext
   }
@@ -43,10 +42,20 @@ private[cassandra] class JournalContext[SC, R[_], CTX <: IsJournalContext[SC, R]
         newSerializer
     }
 
-    ctx.events(
-      keyspace,
-      table,
-      serializer,
-      Array("persistence_id", "partition_nr", "sequence_nr", "event", "ser_id", "ser_manifest", "message", "event_manifest", "writer_uuid"))
+    implicitly[IsJournalContext[R]]
+      .events(
+        keyspace,
+        table,
+        serializer,
+        Array(
+          "persistence_id",
+          "partition_nr",
+          "sequence_nr",
+          "event",
+          "ser_id",
+          "ser_manifest",
+          "message",
+          "event_manifest",
+          "writer_uuid"))
   }
 }

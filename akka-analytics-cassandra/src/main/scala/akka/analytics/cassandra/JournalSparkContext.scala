@@ -9,7 +9,7 @@ import org.apache.spark.rdd.RDD
 class JournalSparkContext(
     sc: SparkContext,
     serializerConfig: Config = ConfigFactory.empty())
-  extends IsJournalContext[SparkContext, RDD] {
+  extends IsJournalContext[RDD] {
 
   override def events(
       keyspace: String = "akka",
